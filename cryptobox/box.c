@@ -53,42 +53,29 @@ int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *
         BPU_gf2VecKDF(iv_dem,ctx->code_ctx->e, iv_salt, BPU_MAC_LEN / 2);
 
         mecs_block_size = ctx->pt_len - tag->len;
-        //How many AES blocks? || 11 for given params
+        fprintf(stderr, "mecs_block_size %d: \n",mecs_block_size);
+        //message len less than mecs_block_size
         float blocks = (float) mecs_block_size / (float) AES_SIZE;
         aes_blocks_num = (int) ceil(blocks);
+        fprintf(stderr, "aes_blocks_num %d: \n",aes_blocks_num);
         aes_blocks_bit = AES_SIZE * aes_blocks_num;
+        //fprintf(stderr, "aes_blocks_bit %d: \n",aes_blocks_bit);
 
-        //Padding to (11) AES_blocks
-        if(in->len < aes_blocks_bit){
-            //Allocate memory for in padded
-            BPU_gf2VecMalloc(&in_pad, aes_blocks_bit);
-            //Allocate memory for ct_dem
-            BPU_gf2VecMalloc(&ct_dem,aes_blocks_bit);
-            pad_len = aes_blocks_bit - in->len;
-            BPU_padAdd(in_pad,in,pad_len);
-        } else if (in->len > aes_blocks_bit && (in->len % 128 != 0)){
-            float blocks = (float) in->len / (float) AES_SIZE;
+       if(in->len > mecs_block_size) {
+            blocks = (float) in->len / (float) AES_SIZE;
             aes_blocks_num = (int) ceil(blocks);
             aes_blocks_bit = AES_SIZE * aes_blocks_num;
+       }
+       if(in->len % 128 == 0) {
+            aes_blocks_bit = aes_blocks_bit + AES_SIZE;
             BPU_printError("aes_blocks_bit %d: \n",aes_blocks_bit);
-            //Allocate memory for in padded
-            BPU_gf2VecMalloc(&in_pad, aes_blocks_bit);
-            //Allocate memory for ct_dem
-            BPU_gf2VecMalloc(&ct_dem,aes_blocks_bit);
-            pad_len = aes_blocks_bit - in->len;
-            BPU_padAdd(in_pad,in,pad_len);
-        } else {
-            float blocks = (float) in->len / (float) AES_SIZE;
-            aes_blocks_num = (int) ceil(blocks);
-            aes_blocks_bit = AES_SIZE * aes_blocks_num + AES_SIZE;
-            BPU_printError("aes_blocks_bit %d: \n",aes_blocks_bit);
-            //Allocate memory for in padded
-            BPU_gf2VecMalloc(&in_pad, aes_blocks_bit);
-            //Allocate memory for ct_dem
-            BPU_gf2VecMalloc(&ct_dem,aes_blocks_bit);
-            pad_len = aes_blocks_bit - in->len;
-            BPU_padAdd(in_pad,in,pad_len);
+            //Allocate memory for in padded 
         }
+        fprintf(stderr, "aes_blocks_bit %d: \n",aes_blocks_bit);
+        BPU_gf2VecMalloc(&in_pad, aes_blocks_bit);
+        BPU_gf2VecMalloc(&ct_dem,aes_blocks_bit);
+        pad_len = aes_blocks_bit - in->len;
+        BPU_padAdd(in_pad,in,pad_len);
 
         //DEM encryption + auth
         err += BPU_gf2VecAesEncandTag(ct_dem,in_pad,tag,key_enc,iv_dem);

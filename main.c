@@ -41,7 +41,7 @@ int testCryptoBox(){
     BPU_T_UN_Mecs_Params params;
     BPU_T_GF2_Vector *pt_dem_a, *ct_kem;
        BPU_gf2VecMalloc(&ct_kem,3072);
-       BPU_gf2VecMalloc(&pt_dem_a,2086);
+       BPU_gf2VecMalloc(&pt_dem_a,1919);
        BPU_gf2VecRand(pt_dem_a,20);
 
     /***************************************/
@@ -454,10 +454,10 @@ int main(int argc, char **argv) {
 	srand(time(NULL));
 
 
-     rc += testKDF();
+    //rc += testKDF();
      rc += testCryptoBox();
 
-     rc += testKeyExchange();
+     //rc += testKeyExchange();
 
 	return rc;
 }
