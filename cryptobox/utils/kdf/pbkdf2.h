@@ -15,12 +15,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef KDF_H
-#define KDF_H
+//#ifndef KDF_H
+//#define KDF_H
 
-#include <bitpunch/config.h>
+//#include <bitpunch/config.h>
 
-#ifdef BPU_CONF_KDF
 #include <stdint.h>
 
 #include <bitpunch/math/gf2types.h>
@@ -31,7 +30,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 int BPU_gf2VecKDF(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *pwd,const BPU_T_GF2_Vector *salt, int keylen);
 
-#endif // BPU_CONF_KDF
 
-#endif // KDF_H
+//#endif // KDF_H
 

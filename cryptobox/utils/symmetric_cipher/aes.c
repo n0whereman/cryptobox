@@ -17,11 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "aes.h"
 
-#ifdef BPU_CONF_AES
+/*#ifdef BPU_CONF_AES
 
 
 #include "mbedtls/config.h"
-#include "mbedtls/platform.h"
+#include "mbedtls/platform.h"*/
 
 #include <bitpunch/debugio.h>
 #include <bitpunch/math/gf2.h>
@@ -40,14 +40,16 @@ int BPU_gf2VecAesEncandTag(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in,BPU
     mbedtls_gcm_init(&gcm_ctx);
 
    // mbedtls_aes_setkey_enc(&enc_ctx, (uint8_t *) key->elements, 256);
-    if(mbedtls_gcm_setkey(&gcm_ctx, MBEDTLS_CIPHER_ID_AES, (uint8_t *) key->elements, 256) == 0){
-        BPU_printError("The key is set\n");
+    if(mbedtls_gcm_setkey(&gcm_ctx, MBEDTLS_CIPHER_ID_AES, (uint8_t *) key->elements, 256) != 0){
+        //BPU_printError("The key is set\n");
+        BPU_gf2VecFree(&add);
+        mbedtls_gcm_free(&gcm_ctx);
+        return 1;
     }
 
     //mbedtls_aes_crypt_cbc(&enc_ctx, MBEDTLS_AES_ENCRYPT, in->len / (BITS_PER_BYTE), (uint8_t *) iv->elements,(uint8_t *) in->elements, output);
-    if(mbedtls_gcm_crypt_and_tag(&gcm_ctx, MBEDTLS_GCM_ENCRYPT, in->len / (BITS_PER_BYTE), (uint8_t *) iv->elements, iv->len / (BITS_PER_BYTE), (uint8_t *) add->elements, 1, (uint8_t *) in->elements, output, tag->len / (BITS_PER_BYTE), tagg)){
-        BPU_printError("Encrypted\n");
-    } else {
+    if(mbedtls_gcm_crypt_and_tag(&gcm_ctx, MBEDTLS_GCM_ENCRYPT, in->len / (BITS_PER_BYTE), (uint8_t *) iv->elements, iv->len / (BITS_PER_BYTE), (uint8_t *) add->elements, 1, (uint8_t *) in->elements, output, tag->len / (BITS_PER_BYTE), tagg) != 0){
+        //BPU_printError("Encrypted\n");
         BPU_gf2VecFree(&add);
         mbedtls_gcm_free(&gcm_ctx);
         return 1;
@@ -71,16 +73,16 @@ int BPU_gf2VecAesDecandTag(BPU_T_GF2_Vector *out,  const BPU_T_GF2_Vector *in,BP
     mbedtls_gcm_context dec_ctx;
     //BPU_printGf2Vec(in);
     mbedtls_gcm_init(&dec_ctx);
-    //mbedtls_aes_setkey_dec(&dec_ctx, (uint8_t *) key->elements, 256);
-    mbedtls_gcm_setkey(&dec_ctx, MBEDTLS_CIPHER_ID_AES, (uint8_t *) key->elements, 256);
-
-    //mbedtls_aes_crypt_cbc(&dec_ctx, MBEDTLS_AES_DECRYPT, in->len / (BITS_PER_BYTE), (uint8_t *) iv->elements, (uint8_t *) in->elements, output );
-    err = mbedtls_gcm_auth_decrypt(&dec_ctx,in->len / (BITS_PER_BYTE), (uint8_t *) iv->elements, iv->len / (BITS_PER_BYTE), (uint8_t *) add->elements, 1, (uint8_t *) tag->elements,  tag->len / (BITS_PER_BYTE), (uint8_t *) in->elements, output);
-    if(err == 0){
-        BPU_printError("Decrypted\n");
+    if(mbedtls_gcm_setkey(&dec_ctx, MBEDTLS_CIPHER_ID_AES, (uint8_t *) key->elements, 256) != 0) {
+        BPU_gf2VecFree(&add);
+        mbedtls_gcm_free(&dec_ctx);
+        return 1;
     }
-    else{
-        BPU_printError("Error je %d\n", err);
+
+    err = mbedtls_gcm_auth_decrypt(&dec_ctx,in->len / (BITS_PER_BYTE), (uint8_t *) iv->elements, iv->len / (BITS_PER_BYTE), (uint8_t *) add->elements, 1, (uint8_t *) tag->elements,  tag->len / (BITS_PER_BYTE), (uint8_t *) in->elements, output);
+    if(err != 0){
+        BPU_printError("Could not decrypt\n");
+        BPU_printError("The error code is %d\n", err);
         mbedtls_gcm_free(&dec_ctx);
         BPU_gf2VecFree(&add);
         return 1;
@@ -93,4 +95,4 @@ int BPU_gf2VecAesDecandTag(BPU_T_GF2_Vector *out,  const BPU_T_GF2_Vector *in,BP
 }
 
 
-#endif
+//#endif

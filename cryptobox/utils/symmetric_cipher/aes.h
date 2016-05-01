@@ -15,17 +15,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef AES_H
+/*#ifndef AES_H
 #define AES_H
 
-#include <bitpunch/config.h>
+#include <bitpunch/config.h>*/
 #include "mbedtls/aes.h"
 #include "mbedtls/gcm.h"
 //#include <mbedtls/aes.h>
 //#include <mbedtls/gcm.h>
 
 
-#ifdef BPU_CONF_AES
+//#ifdef BPU_CONF_AES
 #include <stdint.h>
 #define AES_BLOCK_SIZE 16
 #define BITS_PER_BYTE 8
@@ -36,7 +36,7 @@ int BPU_gf2VecAesEncandTag(BPU_T_GF2_Vector *out,const BPU_T_GF2_Vector *in, BPU
 
 int BPU_gf2VecAesDecandTag(BPU_T_GF2_Vector *out,const BPU_T_GF2_Vector *in, BPU_T_GF2_Vector *tag, BPU_T_GF2_Vector *key,  BPU_T_GF2_Vector *iv);
 
-#endif // BPU_CONF_AES
+//#endif // BPU_CONF_AES
 
-#endif // AES_H
+//#endif // AES_H
 

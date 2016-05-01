@@ -24,12 +24,7 @@
 #include <bitpunch/math/gf2types.h>
 #include <bitpunch/crypto/mecsctx.h>
 
-//ToDO: odstran includy
-//#include<bitpunch/crypto/kdf/pbkdf2.h>
-//#include<bitpunch/crypto/aes/aes.h>
-#include<bitpunch/asn1/asn1.h>
-#include<cryptobox/utils/symmetric_cipher/aes.h>
-#include<cryptobox/utils/kdf/pbkdf2.h>
+#include <bitpunch/asn1/asn1.h>
 
 static const char *encsalt = "PBKDF2-SALT-CONST-ENCRYPTION";
 static const char *macsalt = "PBKDF2-SALT-CONST-MAC";

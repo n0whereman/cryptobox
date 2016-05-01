@@ -1,6 +1,6 @@
 #include "pbkdf2.h"
 
-#ifdef BPU_CONF_KDF
+//#ifdef BPU_CONF_KDF
 #include "mbedtls/pkcs5.h"
 
 #include <bitpunch/debugio.h>
@@ -31,4 +31,4 @@ int BPU_gf2VecKDF(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *pwd,const BPU_T
     mbedtls_md_free( &ctx );
 	return 0;
 }
-#endif
+//#endif

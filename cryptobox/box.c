@@ -4,11 +4,13 @@
 #include <bitpunch/debugio.h>
 #include <bitpunch/math/gf2.h>
 #include <math.h>
+#include <time.h>
 #include <bitpunch/bitpunch.h>
 #include <bitpunch/crypto/hash/sha512.h>
 #include <bitpunch/asn1/asn1.h>
-//ToDO: prerobit zavislosti na utils
 #include <bitpunch/crypto/padding/padding.h>
+#include <cryptobox/utils/symmetric_cipher/aes.h>
+#include <cryptobox/utils/kdf/pbkdf2.h>
 
 int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *pk, int size) {
         BPU_T_GF2_Vector *key_enc,*mecs_out,*rest,*mecs_block,*tag, *enc_salt,*ct_dem, *iv_dem,*pt_kem,*iv_salt,*in_pad;
@@ -53,13 +55,10 @@ int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *
         BPU_gf2VecKDF(iv_dem,ctx->code_ctx->e, iv_salt, BPU_MAC_LEN / 2);
 
         mecs_block_size = ctx->pt_len - tag->len;
-        fprintf(stderr, "mecs_block_size %d: \n",mecs_block_size);
         //message len less than mecs_block_size
         float blocks = (float) mecs_block_size / (float) AES_SIZE;
         aes_blocks_num = (int) ceil(blocks);
-        fprintf(stderr, "aes_blocks_num %d: \n",aes_blocks_num);
         aes_blocks_bit = AES_SIZE * aes_blocks_num;
-        //fprintf(stderr, "aes_blocks_bit %d: \n",aes_blocks_bit);
 
        if(in->len > mecs_block_size) {
             blocks = (float) in->len / (float) AES_SIZE;
@@ -68,10 +67,10 @@ int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *
        }
        if(in->len % 128 == 0) {
             aes_blocks_bit = aes_blocks_bit + AES_SIZE;
-            BPU_printError("aes_blocks_bit %d: \n",aes_blocks_bit);
+            //BPU_printError("aes_blocks_bit %d: \n",aes_blocks_bit);
             //Allocate memory for in padded 
         }
-        fprintf(stderr, "aes_blocks_bit %d: \n",aes_blocks_bit);
+        //fprintf(stderr, "aes_blocks_bit %d: \n",aes_blocks_bit);
         BPU_gf2VecMalloc(&in_pad, aes_blocks_bit);
         BPU_gf2VecMalloc(&ct_dem,aes_blocks_bit);
         pad_len = aes_blocks_bit - in->len;
@@ -92,7 +91,8 @@ int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *
         BPU_gf2VecMalloc(&rest,pt_kem->len - ctx->pt_len);
         BPU_gf2VecCrop(rest, pt_kem, ctx->pt_len,pt_kem->len - ctx->pt_len);
 
-        fprintf(stderr, "MECS encryption...\n");
+        //fprintf(stderr, "MECS encryption...\n");
+        
         if (BPU_mecsBasicEncrypt(mecs_out, mecs_block, ctx,0)) {
             BPU_printError("Encryption error");
             BPU_mecsFreeCtx(&ctx);
@@ -109,6 +109,8 @@ int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *
             BPU_gf2VecFree(&tag);
             return 1;
         }
+        
+       
 
         BPU_gf2VecConcat(out, mecs_out,rest);
 
@@ -147,11 +149,14 @@ int BPU_cryptobox_recieve(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const BPU
         //Allocation of memory for IV
         BPU_gf2VecMalloc(&iv_dem,128);
 
-        fprintf(stderr, "MECS decryption...\n");
+        //fprintf(stderr, "MECS decryption...\n");
+        clock_t tic = clock();
          if (BPU_mecsBasicDecrypt(mecs_dec, mecs_block, ctx)) {
              //BPU_printError("Decryption error");
-             BPU_gf2VecRand(ctx->code_ctx->e, 20);
+             //BPU_gf2VecRand(ctx->code_ctx->e, 20);
          }
+        clock_t toc = clock();
+        fprintf(stderr,"%f\n",(double)(toc - tic) / CLOCKS_PER_SEC);
 
         BPU_gf2VecMalloc(&ct_dem_tag, mecs_dec->len + rest->len);
         BPU_gf2VecConcat(ct_dem_tag,mecs_dec,rest);
@@ -179,7 +184,7 @@ int BPU_cryptobox_recieve(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const BPU
         //DEM decryption
 
         if(BPU_gf2VecAesDecandTag(pt_dem,ct_dem,tag,key_enc,iv_dem)){
-            BPU_printError("Could not be decrypted\n");
+            fprintf(stderr, "Could not be decrypted\n");
             BPU_gf2VecFree(&tag);
             BPU_gf2VecFree(&pt_dem);
             BPU_gf2VecFree(&ct_dem_tag);
@@ -194,7 +199,7 @@ int BPU_cryptobox_recieve(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const BPU
             return 1;
         }
 
-        BPU_padDel(out,pt_dem, 128);
+        BPU_padDel(out,pt_dem);
 
         //BPU_printError("OUT:");
        // BPU_printGf2Vec(out);
