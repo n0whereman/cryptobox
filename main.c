@@ -50,7 +50,9 @@ int testCryptoBox(){
        //ToDo: check -> must be more than 128
        //test 10 Megabeytes - 83886080 bits - segfault
        //(2048 - 1498) * 1498 - a public key size for given params
-       BPU_gf2VecMalloc(&pt_dem_a,416);
+       //4294967295 
+       //83886080  41943040
+       BPU_gf2VecMalloc(&pt_dem_a,83886080);
        //BPU_gf2VecRand(pt_dem_a,20);
 
     /***************************************/
@@ -118,7 +120,7 @@ int testCryptoBox(){
         BPU_gf2VecFree(&pt_dem_a);
     return 1;
     }
-        
+    fprintf(stderr, "Decrypted\n");
 
     //Releasing used memory
     BPU_gf2VecFree(&ct_kem);

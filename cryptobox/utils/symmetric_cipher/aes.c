@@ -31,7 +31,8 @@ int BPU_gf2VecAesEncandTag(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in,BPU
     //TODO: PADDING + CHECKS
    BPU_T_GF2_Vector *add = NULL;
    BPU_gf2VecMalloc(&add,1);
-    uint8_t output[out->len/8];
+    //uint8_t output[out->len/8];
+    uint8_t *output = (uint8_t*) malloc (out->len);
     uint8_t tagg[tag->len/8];
     if (in->len % 16) {
             BPU_printWarning("input vector len %d, should be divisible by 16", in->len);
@@ -66,7 +67,8 @@ int BPU_gf2VecAesDecandTag(BPU_T_GF2_Vector *out,  const BPU_T_GF2_Vector *in,BP
     BPU_T_GF2_Vector *add = NULL;
     BPU_gf2VecMalloc(&add,1);
     int err = 0;
-    uint8_t output[out->len/8];
+    //uint8_t output[out->len/8];
+    uint8_t *output = (uint8_t*) malloc (out->len);
     if (in->len % 16) {
             BPU_printWarning("input vector len %d, should be divisible by 16", in->len);
     }
