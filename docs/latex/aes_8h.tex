@@ -1,0 +1,82 @@
+\hypertarget{aes_8h}{}\section{/\+Users/momo/\+Desktop/\+Skolka/\+D\+I\+P\+L\+O\+M\+K\+A/cryptobox/cryptobox/utils/symmetric\+\_\+cipher/aes.h File Reference}
+\label{aes_8h}\index{/\+Users/momo/\+Desktop/\+Skolka/\+D\+I\+P\+L\+O\+M\+K\+A/cryptobox/cryptobox/utils/symmetric\+\_\+cipher/aes.\+h@{/\+Users/momo/\+Desktop/\+Skolka/\+D\+I\+P\+L\+O\+M\+K\+A/cryptobox/cryptobox/utils/symmetric\+\_\+cipher/aes.\+h}}
+{\ttfamily \#include \char`\"{}mbedtls/aes.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}mbedtls/gcm.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+{\ttfamily \#include $<$bitpunch/math/gf2types.\+h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{aes_8h_af19ab913a847ad1e91c5291215116de1}{A\+E\+S\+\_\+\+B\+L\+O\+C\+K\+\_\+\+S\+I\+ZE}~16
+\item 
+\#define \hyperlink{aes_8h_a369ecd38b3ab077fc235f892354bb46f}{B\+I\+T\+S\+\_\+\+P\+E\+R\+\_\+\+B\+Y\+TE}~8
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{aes_8h_a364a6c32eb43c61dc4d3cb33a11322f7}{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Encand\+Tag} (B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$in, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$tag, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$key, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$iv)
+\item 
+int \hyperlink{aes_8h_a77ee3c32129c841c9849a0573f1cefa2}{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Decand\+Tag} (B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$in, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$tag, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$key, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$iv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{aes.\+h@{aes.\+h}!A\+E\+S\+\_\+\+B\+L\+O\+C\+K\+\_\+\+S\+I\+ZE@{A\+E\+S\+\_\+\+B\+L\+O\+C\+K\+\_\+\+S\+I\+ZE}}
+\index{A\+E\+S\+\_\+\+B\+L\+O\+C\+K\+\_\+\+S\+I\+ZE@{A\+E\+S\+\_\+\+B\+L\+O\+C\+K\+\_\+\+S\+I\+ZE}!aes.\+h@{aes.\+h}}
+\subsubsection[{\texorpdfstring{A\+E\+S\+\_\+\+B\+L\+O\+C\+K\+\_\+\+S\+I\+ZE}{AES_BLOCK_SIZE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+E\+S\+\_\+\+B\+L\+O\+C\+K\+\_\+\+S\+I\+ZE~16}\hypertarget{aes_8h_af19ab913a847ad1e91c5291215116de1}{}\label{aes_8h_af19ab913a847ad1e91c5291215116de1}
+\index{aes.\+h@{aes.\+h}!B\+I\+T\+S\+\_\+\+P\+E\+R\+\_\+\+B\+Y\+TE@{B\+I\+T\+S\+\_\+\+P\+E\+R\+\_\+\+B\+Y\+TE}}
+\index{B\+I\+T\+S\+\_\+\+P\+E\+R\+\_\+\+B\+Y\+TE@{B\+I\+T\+S\+\_\+\+P\+E\+R\+\_\+\+B\+Y\+TE}!aes.\+h@{aes.\+h}}
+\subsubsection[{\texorpdfstring{B\+I\+T\+S\+\_\+\+P\+E\+R\+\_\+\+B\+Y\+TE}{BITS_PER_BYTE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\+I\+T\+S\+\_\+\+P\+E\+R\+\_\+\+B\+Y\+TE~8}\hypertarget{aes_8h_a369ecd38b3ab077fc235f892354bb46f}{}\label{aes_8h_a369ecd38b3ab077fc235f892354bb46f}
+
+
+\subsection{Function Documentation}
+\index{aes.\+h@{aes.\+h}!B\+P\+U\+\_\+gf2\+Vec\+Aes\+Decand\+Tag@{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Decand\+Tag}}
+\index{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Decand\+Tag@{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Decand\+Tag}!aes.\+h@{aes.\+h}}
+\subsubsection[{\texorpdfstring{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Decand\+Tag(\+B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$in, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$tag, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$key, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$iv)}{BPU_gf2VecAesDecandTag(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, BPU_T_GF2_Vector *tag, BPU_T_GF2_Vector *key, BPU_T_GF2_Vector *iv)}}]{\setlength{\rightskip}{0pt plus 5cm}int B\+P\+U\+\_\+gf2\+Vec\+Aes\+Decand\+Tag (
+\begin{DoxyParamCaption}
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{out, }
+\item[{const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{in, }
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{tag, }
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{key, }
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{iv}
+\end{DoxyParamCaption}
+)}\hypertarget{aes_8h_a77ee3c32129c841c9849a0573f1cefa2}{}\label{aes_8h_a77ee3c32129c841c9849a0573f1cefa2}
+The function decrypts a message and provides auth tag. 
+\begin{DoxyParams}{Parameters}
+{\em out\mbox{[}out\mbox{]}} & an output vector \\
+\hline
+{\em in\mbox{[}in\mbox{]}} & an input \\
+\hline
+{\em tag\mbox{[}in\mbox{]}} & an auth tag \\
+\hline
+{\em iv\mbox{[}in\mbox{]}} & an initialization vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on succes else, non-\/zero value 
+\end{DoxyReturn}
+\index{aes.\+h@{aes.\+h}!B\+P\+U\+\_\+gf2\+Vec\+Aes\+Encand\+Tag@{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Encand\+Tag}}
+\index{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Encand\+Tag@{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Encand\+Tag}!aes.\+h@{aes.\+h}}
+\subsubsection[{\texorpdfstring{B\+P\+U\+\_\+gf2\+Vec\+Aes\+Encand\+Tag(\+B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$in, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$tag, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$key, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$iv)}{BPU_gf2VecAesEncandTag(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in, BPU_T_GF2_Vector *tag, BPU_T_GF2_Vector *key, BPU_T_GF2_Vector *iv)}}]{\setlength{\rightskip}{0pt plus 5cm}int B\+P\+U\+\_\+gf2\+Vec\+Aes\+Encand\+Tag (
+\begin{DoxyParamCaption}
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{out, }
+\item[{const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{in, }
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{tag, }
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{key, }
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{iv}
+\end{DoxyParamCaption}
+)}\hypertarget{aes_8h_a364a6c32eb43c61dc4d3cb33a11322f7}{}\label{aes_8h_a364a6c32eb43c61dc4d3cb33a11322f7}
+The function encrypts a message and provides auth tag. 
+\begin{DoxyParams}{Parameters}
+{\em out\mbox{[}out\mbox{]}} & an output vector \\
+\hline
+{\em in\mbox{[}in\mbox{]}} & an input \\
+\hline
+{\em tag\mbox{[}out\mbox{]}} & an auth tag \\
+\hline
+{\em iv\mbox{[}in\mbox{]}} & an initialization vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on succes else, non-\/zero value 
+\end{DoxyReturn}

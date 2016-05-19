@@ -34,15 +34,15 @@ int BPU_gf2VecAesEncandTag(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in,BPU
     //uint8_t output[out->len/8];
     uint8_t *output = (uint8_t*) malloc (out->len);
     uint8_t tagg[tag->len/8];
-    if (in->len % 16) {
-            BPU_printWarning("input vector len %d, should be divisible by 16", in->len);
+    if (in->len % 16 && in->len < 128) {
+            fprintf(stderr, "input vector len %d, should be divisible by 16", in->len);
+            BPU_gf2VecFree(&add);
+            return 1;
     }
     mbedtls_gcm_context gcm_ctx;
     mbedtls_gcm_init(&gcm_ctx);
 
-   // mbedtls_aes_setkey_enc(&enc_ctx, (uint8_t *) key->elements, 256);
     if(mbedtls_gcm_setkey(&gcm_ctx, MBEDTLS_CIPHER_ID_AES, (uint8_t *) key->elements, 256) != 0){
-        //BPU_printError("The key is set\n");
         BPU_gf2VecFree(&add);
         mbedtls_gcm_free(&gcm_ctx);
         return 1;
@@ -50,7 +50,6 @@ int BPU_gf2VecAesEncandTag(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *in,BPU
 
     //mbedtls_aes_crypt_cbc(&enc_ctx, MBEDTLS_AES_ENCRYPT, in->len / (BITS_PER_BYTE), (uint8_t *) iv->elements,(uint8_t *) in->elements, output);
     if(mbedtls_gcm_crypt_and_tag(&gcm_ctx, MBEDTLS_GCM_ENCRYPT, in->len / (BITS_PER_BYTE), (uint8_t *) iv->elements, iv->len / (BITS_PER_BYTE), (uint8_t *) add->elements, 1, (uint8_t *) in->elements, output, tag->len / (BITS_PER_BYTE), tagg) != 0){
-        //BPU_printError("Encrypted\n");
         BPU_gf2VecFree(&add);
         mbedtls_gcm_free(&gcm_ctx);
         return 1;

@@ -24,41 +24,24 @@
 #include <sys/time.h>
 
 
-int testKDF(){
-    BPU_T_GF2_Vector *extended_pwd, *pwd, *salt;
-    BPU_gf2VecMalloc(&pwd,64);
-    BPU_gf2VecMalloc(&salt,64);
-    BPU_gf2VecMalloc(&extended_pwd,512);
-    BPU_gf2VecKDF(extended_pwd,pwd, salt, 512);
-    return 0;
-}
-
-
-int testKeyGen(){
-
-
-    return 0;
-}
-
 int testCryptoBox(){
     int rc = 0;
     char *pk = NULL;
+    fprintf(stderr, "Testing cryptobox functions\n");
     int size;
     BPU_T_UN_Mecs_Params params;
-    BPU_T_GF2_Vector *pt_dem_a, *ct_kem;
+    BPU_T_GF2_Vector *pt_dem_a, *ct_kem, *pt_out;
     BPU_T_Mecs_Ctx *ctx = NULL;
-    BPU_gf2VecMalloc(&ct_kem,3072);
-    //ToDo: check -> must be more than 128
-    BPU_gf2VecMalloc(&pt_dem_a,512);
-    //BPU_gf2VecRand(pt_dem_a,20);
+    BPU_gf2VecMalloc(&ct_kem,121);
+    BPU_gf2VecMalloc(&pt_dem_a,127);
+    BPU_gf2VecRand(pt_dem_a,20);
+    BPU_gf2VecMalloc(&pt_out,pt_dem_a->len);
+    BPU_gf2VecCopy(pt_out,pt_dem_a);
 
-    /***************************************/
-    // mce initialisation t = 50, m = 11
-    //fprintf(stderr, "Basic GOPPA Initialisation...\n");
     if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
         BPU_gf2VecFree(&ct_kem);
         BPU_gf2VecFree(&pt_dem_a);
-        fprintf(stderr, "Error params\n");
+        fprintf(stderr, "Error params could not be initialized\n");
         return 1;
     }
     
@@ -67,22 +50,10 @@ int testCryptoBox(){
         BPU_gf2VecFree(&pt_dem_a);
         BPU_mecsFreeParamsGoppa(&params);
         BPU_mecsFreeCtx(&ctx);
-        fprintf(stderr, "Mecs init\n");
+        fprintf(stderr, "Mecs init failed\n");
         return 1;
     }
-    //ToDo: the scheme with QC-MDPC codes
-    /*if (BPU_mecsInitParamsQcmdpc(&params, 4801, 2, 90, 84)) {
-        return 1;
-    }
-    if (BPU_mecsInitCtx(&ctx, &params, BPU_EN_MECS_BASIC_QCMDPC)) {
-        return 1;
-    }
-    fprintf(stderr,"init error\n");*/
 
-    /***************************************/
-    //fprintf(stderr, "Key generation...\n");
-    // key pair generation
-    
     if (BPU_mecsGenKeyPair(ctx)) {
         BPU_gf2VecFree(&ct_kem);
         BPU_gf2VecFree(&pt_dem_a);
@@ -92,9 +63,6 @@ int testCryptoBox(){
         return 1;
     }
     
-
-
-    //Encoding pub key
     if (BPU_asn1EncodePubKey(&pk, &size, ctx)) {
         fprintf(stderr, "Encode pubkey error");
         free(pk);
@@ -104,8 +72,6 @@ int testCryptoBox(){
         return 1;
     }
     
-    //BPU_printError("Calling cryptobox...\n");
-    clock_t tic = clock();
     if(BPU_cryptobox_send(ct_kem,pt_dem_a, pk,size) == 1){
         fprintf(stderr, "Hybrid scheme error\n");
         free(pk);
@@ -115,9 +81,6 @@ int testCryptoBox(){
         BPU_gf2VecFree(&pt_dem_a);
     return 1;
     }
-    clock_t toc = clock();
-    fprintf(stderr,"Cass je %f\n",(double)(toc - tic) / CLOCKS_PER_SEC);
-    
     
    if(BPU_cryptobox_recieve(pt_dem_a,ct_kem, ctx)){
         BPU_printError("Hybrid scheme error");
@@ -128,14 +91,24 @@ int testCryptoBox(){
         BPU_gf2VecFree(&pt_dem_a);
     return 1;
     }
-    fprintf(stderr, "Decrypted\n");
+    
+    if(BPU_gf2VecCmp(pt_dem_a, pt_out)){
+        fprintf(stderr, "Output plain text differs from input\n");
+        BPU_gf2VecFree(&ct_kem);
+        BPU_gf2VecFree(&pt_dem_a);
+        BPU_mecsFreeCtx(&ctx);
+        BPU_mecsFreeParamsGoppa(&params);
+        return 1;
+    } 
+    else {
+        fprintf(stderr, "The text was decrypted\n");
+    }
 
     //Releasing used memory
     BPU_gf2VecFree(&ct_kem);
     BPU_gf2VecFree(&pt_dem_a);
     BPU_mecsFreeCtx(&ctx);
-    //BPU_mecsFreeParamsGoppa(&params);
-
+    BPU_mecsFreeParamsGoppa(&params); 
     return rc;
 }
 
@@ -143,6 +116,7 @@ int testCryptoBox(){
 int testKeyExchange(){
     int rc = 0;
     // MUST BE NULL
+    fprintf(stderr, "Testing key exchange scheme\n");
     BPU_T_Mecs_Ctx *ctx_A = NULL;
     BPU_T_Mecs_Ctx *ctx_B = NULL;
     BPU_T_Mecs_Ctx *ctx_E = NULL;
@@ -163,11 +137,7 @@ int testKeyExchange(){
 
     //A generates r1
     BPU_gf2VecRand(r1,20);
-
-    /***************************************/
-    // mce initialisation t = 50, m = 11
     
-    //fprintf(stderr, "Basic GOPPA Initialisation for agent A...\n");
     if (BPU_mecsInitParamsGoppa(&params, 11, 50, 0)) {
         BPU_gf2VecFree(&r1);
         BPU_gf2VecFree(&r2);
@@ -294,8 +264,6 @@ int testKeyExchange(){
     BPU_gf2VecMalloc(&s1,pub_vec->len + r1->len);
     BPU_gf2VecConcat(s1, pub_vec, r1);
     
-    //A sends m1 to B
-    clock_t tic = clock();
     if(BPU_cryptobox_send(ct_kem,s1, pkb,size)){
         BPU_printError("Hybrid scheme error");
         BPU_gf2VecFree(&r1);
@@ -312,9 +280,6 @@ int testKeyExchange(){
         BPU_mecsFreeParamsGoppa(&params);
     return 1;
     }
-     clock_t toc = clock();
-    fprintf(stderr,"m1 decrypts r2 %f\n",(double)(toc - tic) / CLOCKS_PER_SEC);
-    
 
     BPU_gf2VecMalloc(&m1_rec,s1->len);
     //B recieves m1
@@ -344,11 +309,7 @@ int testKeyExchange(){
     BPU_gf2VecRand(r2,20);
     BPU_gf2VecRand(r3,20);
 
-    //BPU_allocateBuffer(&pke_buf,&buf_size,pke_rec->len);
-    //ToDo: BPU_gf2VectortoArray(pke_rec,pke_buf, &buf_size);
-
     //B computes s2
-    
      BPU_gf2VecMalloc(&s2_kem, 4000);
     if(BPU_cryptobox_send(s2_kem,r2, pke,size)){
         BPU_printError("Hybrid scheme error");
@@ -458,9 +419,8 @@ int testKeyExchange(){
      return 1;
      }
     
-     fprintf(stderr, "DeCCrypted\n");
-
-    //ToDo: uvolni pamat
+     
+     fprintf(stderr, "Done!\n");
     BPU_gf2VecFree(&r1);
     BPU_gf2VecFree(&r2);
     BPU_gf2VecFree(&r3);
@@ -489,12 +449,12 @@ int testKeyExchange(){
 
 int main(int argc, char **argv) {
 	int rc = 0;
-    // MUST BE NULL
 
 	srand(time(NULL));
 
-    //rc += testKDF();
+    //Testing functions...
     rc += testCryptoBox();
+    fprintf(stderr, "*******************\n");
     rc += testKeyExchange();
 
 	return rc;

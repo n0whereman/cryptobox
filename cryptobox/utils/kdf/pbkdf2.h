@@ -27,7 +27,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BPU_HASH_LEN 64
 
 
-
+/**
+ * The function derives a pseudorandom output from given inputs.
+ * @param  out[out] an output vector
+ * @param  pwd[in]  a password
+ * @param  salt[in] a salt
+ * @param  keylen[in] a size of the output
+ * @return                0 on succes else, non-zero value
+ */
 int BPU_gf2VecKDF(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *pwd,const BPU_T_GF2_Vector *salt, int keylen);
 
 

@@ -1,0 +1,83 @@
+\hypertarget{box_8h}{}\section{/\+Users/momo/\+Desktop/\+Skolka/\+D\+I\+P\+L\+O\+M\+K\+A/cryptobox/cryptobox/box.h File Reference}
+\label{box_8h}\index{/\+Users/momo/\+Desktop/\+Skolka/\+D\+I\+P\+L\+O\+M\+K\+A/cryptobox/cryptobox/box.\+h@{/\+Users/momo/\+Desktop/\+Skolka/\+D\+I\+P\+L\+O\+M\+K\+A/cryptobox/cryptobox/box.\+h}}
+{\ttfamily \#include $<$bitpunch/config.\+h$>$}\\*
+{\ttfamily \#include $<$bitpunch/debugio.\+h$>$}\\*
+{\ttfamily \#include $<$bitpunch/crypto/mecs.\+h$>$}\\*
+{\ttfamily \#include $<$bitpunch/math/gf2types.\+h$>$}\\*
+{\ttfamily \#include $<$bitpunch/crypto/mecsctx.\+h$>$}\\*
+{\ttfamily \#include $<$bitpunch/asn1/asn1.\+h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{box_8h_a4beaa196cca78b6a443dc114438d768b}{B\+P\+U\+\_\+\+M\+A\+C\+\_\+\+L\+EN}~256
+\item 
+\#define \hyperlink{box_8h_a6a78c103678233c6f750ef0a8347596f}{A\+E\+S\+\_\+\+S\+I\+ZE}~128
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{box_8h_abbc96756030f79a1284781effd95a2fb}{B\+P\+U\+\_\+cryptobox\+\_\+send} (B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$in, const char $\ast$pk, int size)
+\begin{DoxyCompactList}\small\item\em Add padding to message. \end{DoxyCompactList}\item 
+int \hyperlink{box_8h_a56b4fbc8fe38263ac7c2a48800438052}{B\+P\+U\+\_\+cryptobox\+\_\+recieve} (B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$in, const B\+P\+U\+\_\+\+T\+\_\+\+Mecs\+\_\+\+Ctx $\ast$ctx2)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{box.\+h@{box.\+h}!A\+E\+S\+\_\+\+S\+I\+ZE@{A\+E\+S\+\_\+\+S\+I\+ZE}}
+\index{A\+E\+S\+\_\+\+S\+I\+ZE@{A\+E\+S\+\_\+\+S\+I\+ZE}!box.\+h@{box.\+h}}
+\subsubsection[{\texorpdfstring{A\+E\+S\+\_\+\+S\+I\+ZE}{AES_SIZE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+E\+S\+\_\+\+S\+I\+ZE~128}\hypertarget{box_8h_a6a78c103678233c6f750ef0a8347596f}{}\label{box_8h_a6a78c103678233c6f750ef0a8347596f}
+\index{box.\+h@{box.\+h}!B\+P\+U\+\_\+\+M\+A\+C\+\_\+\+L\+EN@{B\+P\+U\+\_\+\+M\+A\+C\+\_\+\+L\+EN}}
+\index{B\+P\+U\+\_\+\+M\+A\+C\+\_\+\+L\+EN@{B\+P\+U\+\_\+\+M\+A\+C\+\_\+\+L\+EN}!box.\+h@{box.\+h}}
+\subsubsection[{\texorpdfstring{B\+P\+U\+\_\+\+M\+A\+C\+\_\+\+L\+EN}{BPU_MAC_LEN}}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\+P\+U\+\_\+\+M\+A\+C\+\_\+\+L\+EN~256}\hypertarget{box_8h_a4beaa196cca78b6a443dc114438d768b}{}\label{box_8h_a4beaa196cca78b6a443dc114438d768b}
+
+
+\subsection{Function Documentation}
+\index{box.\+h@{box.\+h}!B\+P\+U\+\_\+cryptobox\+\_\+recieve@{B\+P\+U\+\_\+cryptobox\+\_\+recieve}}
+\index{B\+P\+U\+\_\+cryptobox\+\_\+recieve@{B\+P\+U\+\_\+cryptobox\+\_\+recieve}!box.\+h@{box.\+h}}
+\subsubsection[{\texorpdfstring{B\+P\+U\+\_\+cryptobox\+\_\+recieve(\+B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$in, const B\+P\+U\+\_\+\+T\+\_\+\+Mecs\+\_\+\+Ctx $\ast$ctx2)}{BPU_cryptobox_recieve(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const BPU_T_Mecs_Ctx *ctx2)}}]{\setlength{\rightskip}{0pt plus 5cm}int B\+P\+U\+\_\+cryptobox\+\_\+recieve (
+\begin{DoxyParamCaption}
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{out, }
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{in, }
+\item[{const B\+P\+U\+\_\+\+T\+\_\+\+Mecs\+\_\+\+Ctx $\ast$}]{ctx2}
+\end{DoxyParamCaption}
+)}\hypertarget{box_8h_a56b4fbc8fe38263ac7c2a48800438052}{}\label{box_8h_a56b4fbc8fe38263ac7c2a48800438052}
+The function decrypts in and puts the output to out. 
+\begin{DoxyParams}{Parameters}
+{\em out\mbox{[}out\mbox{]}} & output vector \\
+\hline
+{\em in\mbox{[}in\mbox{]}} & input message \\
+\hline
+{\em ctx\mbox{[}in\mbox{]}} & a M\+E\+CS context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on succes else, non-\/zero value 
+\end{DoxyReturn}
+\index{box.\+h@{box.\+h}!B\+P\+U\+\_\+cryptobox\+\_\+send@{B\+P\+U\+\_\+cryptobox\+\_\+send}}
+\index{B\+P\+U\+\_\+cryptobox\+\_\+send@{B\+P\+U\+\_\+cryptobox\+\_\+send}!box.\+h@{box.\+h}}
+\subsubsection[{\texorpdfstring{B\+P\+U\+\_\+cryptobox\+\_\+send(\+B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$in, const char $\ast$pk, int size)}{BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *pk, int size)}}]{\setlength{\rightskip}{0pt plus 5cm}int B\+P\+U\+\_\+cryptobox\+\_\+send (
+\begin{DoxyParamCaption}
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{out, }
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{in, }
+\item[{const char $\ast$}]{pk, }
+\item[{int}]{size}
+\end{DoxyParamCaption}
+)}\hypertarget{box_8h_abbc96756030f79a1284781effd95a2fb}{}\label{box_8h_abbc96756030f79a1284781effd95a2fb}
+
+
+Add padding to message. 
+
+The function encrypts in and puts the output to out. 
+\begin{DoxyParams}{Parameters}
+{\em out\mbox{[}out\mbox{]}} & output vector \\
+\hline
+{\em in\mbox{[}in\mbox{]}} & input message \\
+\hline
+{\em pk\mbox{[}in\mbox{]}} & a publick-\/key in A\+S\+N.\+1 format \\
+\hline
+{\em size\mbox{[}in\mbox{]}} & a size of the publick-\/key \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on succes else, non-\/zero value 
+\end{DoxyReturn}

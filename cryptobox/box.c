@@ -34,12 +34,6 @@ int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *
         //Alloc memory for AUTH_TAG, at least 16 bytes
         BPU_gf2VecMalloc(&tag,128);
 
-        //TODO: CT_DEM should be divisible by 128, otherwise padding
-        if(in->len < 128){
-            BPU_printError("Len must be at least 16 bytes\n");
-            return -1;
-        }
-
         //Alloc memory for keys
         BPU_gf2VecMalloc(&key_enc,BPU_MAC_LEN);
 
@@ -60,17 +54,16 @@ int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *
         aes_blocks_num = (int) ceil(blocks);
         aes_blocks_bit = AES_SIZE * aes_blocks_num;
 
-       if(in->len > mecs_block_size) {
+        if(in->len > mecs_block_size) {
             blocks = (float) in->len / (float) AES_SIZE;
             aes_blocks_num = (int) ceil(blocks);
             aes_blocks_bit = AES_SIZE * aes_blocks_num;
        }
+
        if(in->len % 128 == 0) {
             aes_blocks_bit = aes_blocks_bit + AES_SIZE;
-            //BPU_printError("aes_blocks_bit %d: \n",aes_blocks_bit);
-            //Allocate memory for in padded 
         }
-        //fprintf(stderr, "aes_blocks_bit %d: \n",aes_blocks_bit);
+
         BPU_gf2VecMalloc(&in_pad, aes_blocks_bit);
         BPU_gf2VecMalloc(&ct_dem,aes_blocks_bit);
         pad_len = aes_blocks_bit - in->len;
@@ -90,8 +83,6 @@ int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *
         //cropp the rest
         BPU_gf2VecMalloc(&rest,pt_kem->len - ctx->pt_len);
         BPU_gf2VecCrop(rest, pt_kem, ctx->pt_len,pt_kem->len - ctx->pt_len);
-
-        //fprintf(stderr, "MECS encryption...\n");
         
         if (BPU_mecsBasicEncrypt(mecs_out, mecs_block, ctx,0)) {
             BPU_printError("Encryption error");
@@ -142,20 +133,19 @@ int BPU_cryptobox_recieve(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const BPU
             BPU_gf2VecCrop(mecs_block, in, 0,ctx->ct_len);
             BPU_gf2VecCrop(rest, in, ctx->ct_len, in->len - ctx->ct_len);
         }
+        if(in->len < ctx->ct_len){
+            fprintf(stderr, "An input can not be smaller than MECS block due to padding attacks\n");
+            return 1;
+        }
 
-        //Allocation of memory for TAG
+        //Allocation of memory for TAG & IV
         BPU_gf2VecMalloc(&tag, 128);
-
-        //Allocation of memory for IV
         BPU_gf2VecMalloc(&iv_dem,128);
-
-        //fprintf(stderr, "MECS decryption...\n");
         
-         if (BPU_mecsBasicDecrypt(mecs_dec, mecs_block, ctx)) {
-             //BPU_printError("Decryption error");
-             //BPU_gf2VecRand(ctx->code_ctx->e, 20);
+        if (BPU_mecsBasicDecrypt(mecs_dec, mecs_block, ctx)) {
+            //In order to avoid reaction attacks, we continue
          }
-
+       
         BPU_gf2VecMalloc(&ct_dem_tag, mecs_dec->len + rest->len);
         BPU_gf2VecConcat(ct_dem_tag,mecs_dec,rest);
 
@@ -199,9 +189,6 @@ int BPU_cryptobox_recieve(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const BPU
 
         BPU_padDel(out,pt_dem);
 
-        //BPU_printError("OUT:");
-       // BPU_printGf2Vec(out);
-
         //Release memory
         BPU_gf2VecFree(&tag);
         BPU_gf2VecFree(&pt_dem);
@@ -212,9 +199,7 @@ int BPU_cryptobox_recieve(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const BPU
         BPU_gf2VecFree(&ct_dem);
         BPU_gf2VecFree(&iv_dem);
         BPU_gf2VecFree(&iv_salt);
-       // ToDo: preco nebyva initialized? BPU_gf2VecFree(&mecs_block);
-        BPU_gf2VecFree(&rest);
-
+        BPU_gf2VecFree(&rest); 
         return 0;
 }
 // #endif

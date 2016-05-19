@@ -1,0 +1,47 @@
+\hypertarget{pbkdf2_8h}{}\section{/\+Users/momo/\+Desktop/\+Skolka/\+D\+I\+P\+L\+O\+M\+K\+A/cryptobox/cryptobox/utils/kdf/pbkdf2.h File Reference}
+\label{pbkdf2_8h}\index{/\+Users/momo/\+Desktop/\+Skolka/\+D\+I\+P\+L\+O\+M\+K\+A/cryptobox/cryptobox/utils/kdf/pbkdf2.\+h@{/\+Users/momo/\+Desktop/\+Skolka/\+D\+I\+P\+L\+O\+M\+K\+A/cryptobox/cryptobox/utils/kdf/pbkdf2.\+h}}
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+{\ttfamily \#include $<$bitpunch/math/gf2types.\+h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{pbkdf2_8h_ab91d129f58b7589fd1981c776d33bee8}{B\+P\+U\+\_\+\+H\+A\+S\+H\+\_\+\+L\+EN}~64
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{pbkdf2_8h_a0ed8fc74b0ab1d754b581e2ab72cd235}{B\+P\+U\+\_\+gf2\+Vec\+K\+DF} (B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$pwd, const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$salt, int keylen)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{pbkdf2.\+h@{pbkdf2.\+h}!B\+P\+U\+\_\+\+H\+A\+S\+H\+\_\+\+L\+EN@{B\+P\+U\+\_\+\+H\+A\+S\+H\+\_\+\+L\+EN}}
+\index{B\+P\+U\+\_\+\+H\+A\+S\+H\+\_\+\+L\+EN@{B\+P\+U\+\_\+\+H\+A\+S\+H\+\_\+\+L\+EN}!pbkdf2.\+h@{pbkdf2.\+h}}
+\subsubsection[{\texorpdfstring{B\+P\+U\+\_\+\+H\+A\+S\+H\+\_\+\+L\+EN}{BPU_HASH_LEN}}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\+P\+U\+\_\+\+H\+A\+S\+H\+\_\+\+L\+EN~64}\hypertarget{pbkdf2_8h_ab91d129f58b7589fd1981c776d33bee8}{}\label{pbkdf2_8h_ab91d129f58b7589fd1981c776d33bee8}
+
+
+\subsection{Function Documentation}
+\index{pbkdf2.\+h@{pbkdf2.\+h}!B\+P\+U\+\_\+gf2\+Vec\+K\+DF@{B\+P\+U\+\_\+gf2\+Vec\+K\+DF}}
+\index{B\+P\+U\+\_\+gf2\+Vec\+K\+DF@{B\+P\+U\+\_\+gf2\+Vec\+K\+DF}!pbkdf2.\+h@{pbkdf2.\+h}}
+\subsubsection[{\texorpdfstring{B\+P\+U\+\_\+gf2\+Vec\+K\+D\+F(\+B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$out, const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$pwd, const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$salt, int keylen)}{BPU_gf2VecKDF(BPU_T_GF2_Vector *out, const BPU_T_GF2_Vector *pwd, const BPU_T_GF2_Vector *salt, int keylen)}}]{\setlength{\rightskip}{0pt plus 5cm}int B\+P\+U\+\_\+gf2\+Vec\+K\+DF (
+\begin{DoxyParamCaption}
+\item[{B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{out, }
+\item[{const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{pwd, }
+\item[{const B\+P\+U\+\_\+\+T\+\_\+\+G\+F2\+\_\+\+Vector $\ast$}]{salt, }
+\item[{int}]{keylen}
+\end{DoxyParamCaption}
+)}\hypertarget{pbkdf2_8h_a0ed8fc74b0ab1d754b581e2ab72cd235}{}\label{pbkdf2_8h_a0ed8fc74b0ab1d754b581e2ab72cd235}
+The function derives a pseudorandom output from given inputs. 
+\begin{DoxyParams}{Parameters}
+{\em out\mbox{[}out\mbox{]}} & an output vector \\
+\hline
+{\em pwd\mbox{[}in\mbox{]}} & a password \\
+\hline
+{\em salt\mbox{[}in\mbox{]}} & a salt \\
+\hline
+{\em keylen\mbox{[}in\mbox{]}} & a size of the output \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on succes else, non-\/zero value 
+\end{DoxyReturn}
