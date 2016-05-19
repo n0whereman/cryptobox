@@ -109,7 +109,7 @@ int BPU_cryptobox_send(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const char *
             BPU_gf2VecFree(&tag);
             return 1;
         }
-        
+
        
 
         BPU_gf2VecConcat(out, mecs_out,rest);
@@ -150,13 +150,11 @@ int BPU_cryptobox_recieve(BPU_T_GF2_Vector *out, BPU_T_GF2_Vector *in, const BPU
         BPU_gf2VecMalloc(&iv_dem,128);
 
         //fprintf(stderr, "MECS decryption...\n");
-        clock_t tic = clock();
+        
          if (BPU_mecsBasicDecrypt(mecs_dec, mecs_block, ctx)) {
              //BPU_printError("Decryption error");
              //BPU_gf2VecRand(ctx->code_ctx->e, 20);
          }
-        clock_t toc = clock();
-        fprintf(stderr,"%f\n",(double)(toc - tic) / CLOCKS_PER_SEC);
 
         BPU_gf2VecMalloc(&ct_dem_tag, mecs_dec->len + rest->len);
         BPU_gf2VecConcat(ct_dem_tag,mecs_dec,rest);
